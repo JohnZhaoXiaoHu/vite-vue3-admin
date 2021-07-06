@@ -41,7 +41,7 @@ export default defineComponent({
     DynamicTable
   },
   setup() {
-    const tableRef = ref<any>(null)
+    const tableRef = ref<InstanceType<typeof DynamicTable>>()
 
     const state = reactive({
       tableLoading: false,
@@ -61,7 +61,7 @@ export default defineComponent({
         content: '您确定要删除所有选中吗？',
         onOk: async () => {
           await delAdminAccount(state.rowSelection.selectedRowKeys.toString())
-          tableRef.value.refreshTableData()
+          tableRef.value?.refreshTableData()
           state.rowSelection.selectedRowKeys = []
         }
       })
@@ -80,7 +80,7 @@ export default defineComponent({
             roles: roles.toString()
           }
           await postAdminAccount(params)
-          tableRef.value.refreshTableData()
+          tableRef.value?.refreshTableData()
         }
       })
     }
@@ -90,8 +90,8 @@ export default defineComponent({
       ...toRefs(state),
       columns,
       tableRef,
-      getAdminAccount,
       isDisabled,
+      getAdminAccount,
       addItem,
       deleteItems
     }

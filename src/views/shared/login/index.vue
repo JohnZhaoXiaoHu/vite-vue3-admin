@@ -96,19 +96,19 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .login-box {
+  display: flex;
   width: 100vw;
   height: 100vh;
-  display: flex;
   padding-top: 240px;
-  flex-direction: column;
-  align-items: center;
   background: url('../../../assets/login.svg');
   background-size: 100%;
+  flex-direction: column;
+  align-items: center;
 
   .login-logo {
     display: flex;
-    align-items: center;
     margin-bottom: 30px;
+    align-items: center;
 
     .svg-icon {
       font-size: 48px;
@@ -117,9 +117,10 @@ export default defineComponent({
     img {
       height: 48px;
     }
+
     h1 {
-      margin-left: 10px;
       margin-bottom: 0;
+      margin-left: 10px;
     }
   }
 
@@ -129,6 +130,7 @@ export default defineComponent({
     .ant-col {
       width: 100%;
     }
+
     .ant-form-item-label {
       padding-right: 6px;
     }

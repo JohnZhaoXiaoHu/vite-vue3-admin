@@ -79,14 +79,14 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .box {
+  display: flex;
   width: 100%;
   height: calc(100vh - 280px);
-  display: flex;
   flex-direction: column;
 
   img {
-    flex: 1;
     min-height: 0;
+    flex: 1;
   }
 
   .ant-form {

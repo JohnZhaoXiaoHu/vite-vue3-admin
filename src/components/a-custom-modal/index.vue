@@ -63,7 +63,6 @@ import useModal from '@/components/a-custom-modal/useModal'
 export default defineComponent({
   name: 'ACustomModal',
   components: { Transition },
-  emits: ['update:visible'],
   props: {
     title: {
       type: String as PropType<string>,
@@ -80,6 +79,7 @@ export default defineComponent({
       default: false
     },
     footer: {
+      type: [Object, String],
       // 底部内容，当不需要默认底部按钮时，可以设为 :footer="null"	string|slot
       default: 'I am footer'
     },
@@ -94,6 +94,7 @@ export default defineComponent({
       default: false
     }
   },
+  emits: ['update:visible'],
   setup(props, ctx: SetupContext) {
     return useModal(props, ctx)
   }

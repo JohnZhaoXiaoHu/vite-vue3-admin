@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="huawei-charge">
     <div class="number">{{ battery.level }}%</div>
     <div class="contrast">
       <div class="circle"></div>
@@ -46,7 +46,47 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.container {
+.huawei-charge {
+  @for $i from 0 through 15 {
+    li:nth-child(#{$i}) {
+      $width: 15 + random(15) + px;
+
+      top: 50%;
+      left: 15 + random(70) + px;
+      width: $width;
+      height: $width;
+      transform: translate(-50%, -50%);
+      animation: moveToTop #{random(6) + 3}s ease-in-out -#{math.div(random(5000), 1000)}s infinite;
+    }
+  }
+
+  @keyframes trotate {
+    50% {
+      border-radius: 45% / 42% 38% 58% 49%;
+    }
+
+    100% {
+      transform: translate(-50%, -50%) rotate(720deg);
+    }
+  }
+
+  @keyframes moveToTop {
+    90% {
+      opacity: 1;
+    }
+
+    100% {
+      opacity: 0.1;
+      transform: translate(-50%, -180px);
+    }
+  }
+
+  @keyframes hueRotate {
+    100% {
+      filter: contrast(15) hue-rotate(360deg);
+    }
+  }
+
   position: absolute;
   bottom: 20vh;
   left: 50vw;
@@ -89,7 +129,7 @@ export default defineComponent({
         border-radius: 42% 38% 62% 49% / 45%;
         content: '';
         transform: translate(-50%, -50%) rotate(0);
-        animation: rotate 10s infinite linear;
+        animation: trotate 10s infinite linear;
       }
 
       &::before {
@@ -128,46 +168,6 @@ export default defineComponent({
   .charging {
     font-size: 20px;
     text-align: center;
-  }
-}
-
-@for $i from 0 through 15 {
-  li:nth-child(#{$i}) {
-    $width: 15 + random(15) + px;
-
-    top: 50%;
-    left: 15 + random(70) + px;
-    width: $width;
-    height: $width;
-    transform: translate(-50%, -50%);
-    animation: moveToTop #{random(6) + 3}s ease-in-out -#{random(5000) / 1000}s infinite;
-  }
-}
-
-@keyframes rotate {
-  50% {
-    border-radius: 45% / 42% 38% 58% 49%;
-  }
-
-  100% {
-    transform: translate(-50%, -50%) rotate(720deg);
-  }
-}
-
-@keyframes moveToTop {
-  90% {
-    opacity: 1;
-  }
-
-  100% {
-    opacity: 0.1;
-    transform: translate(-50%, -180px);
-  }
-}
-
-@keyframes hueRotate {
-  100% {
-    filter: contrast(15) hue-rotate(360deg);
   }
 }
 </style>

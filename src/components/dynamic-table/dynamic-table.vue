@@ -9,7 +9,7 @@
     :pagination="pageOptions"
     bordered
     :customRow="customRow"
-    v-bind="{ ...$props, ...$attrs }"
+    v-bind="$attrs"
     @change="paginationChange"
   >
     <!--  自定义slots start-->
@@ -61,14 +61,6 @@
         >
           <!--        对表格的操作动作start-->
           <template v-for="(action, index) in actions">
-            <template v-if="action.type == 'select'">
-              <!--              下拉选择器-->
-              <a-select :key="index" v-model:value="slotProps.record[action.key]" size="small">
-                <Option v-for="option in action.options" :key="option.value" :value="option.value">
-                  {{ option.label }}
-                </Option>
-              </a-select>
-            </template>
             <!--            编辑按钮-->
             <template v-if="action.type == 'button'">
               <a-button
@@ -89,8 +81,8 @@
               >
                 <template #title> 您确定要删除吗？ </template>
                 <a-button
-                  v-bind="{ ...buttonProps, ...action.props }"
                   v-permission="action.permission"
+                  v-bind="{ ...buttonProps, ...action.props }"
                 >
                   {{ action.text }}
                 </a-button>

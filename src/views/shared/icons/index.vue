@@ -48,17 +48,21 @@ export default defineComponent({
 .icons-box {
   display: flex;
   justify-content: center;
+
   ::v-deep(.ant-card) {
     max-width: 80vw;
+
     .ant-card-body {
       display: flex;
       flex-wrap: wrap;
+
       .ant-card-grid {
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
         width: 20%;
+
         .anticon {
           margin-bottom: 14px;
         }

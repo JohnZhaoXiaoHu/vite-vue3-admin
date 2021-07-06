@@ -8,15 +8,15 @@
   >
     <template #title>
       <a-button
-        type="primary"
         v-permission="{ action: 'create', effect: 'disabled' }"
+        type="primary"
         @click="addItem"
       >
         新增字典
       </a-button>
       <a-button
+        v-permission="{ action: 'delete', effect: 'disabled' }"
         :disabled="isDisabled"
-        v-permission="{ action: 'delete' }"
         type="primary"
         @click="deleteItems"
       >
@@ -47,7 +47,7 @@ export default defineComponent({
     DynamicTable
   },
   setup() {
-    const tableRef = ref<any>(null)
+    const tableRef = ref<InstanceType<typeof DynamicTable>>()!
 
     const state = reactive({
       tableLoading: false,
@@ -67,7 +67,7 @@ export default defineComponent({
         content: '您确定要删除所有选中吗？',
         onOk: async () => {
           await delAdminDictConfig(state.rowSelection.selectedRowKeys.toString())
-          tableRef.value.refreshTableData()
+          tableRef.value?.refreshTableData()
           state.rowSelection.selectedRowKeys = []
         }
       })
@@ -79,7 +79,7 @@ export default defineComponent({
         formSchema: getFormSchema(),
         handleOk: async (modelRef, state) => {
           await postAdminDictConfig(modelRef)
-          tableRef.value.refreshTableData()
+          tableRef.value?.refreshTableData()
         }
       })
     }
@@ -89,8 +89,8 @@ export default defineComponent({
       ...toRefs(state),
       columns,
       tableRef,
-      getAdminDictConfig,
       isDisabled,
+      getAdminDictConfig,
       addItem,
       deleteItems
     }

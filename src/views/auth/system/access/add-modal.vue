@@ -76,9 +76,15 @@
 <script lang="ts">
 import { defineComponent, reactive, toRefs, onMounted, toRaw, ref } from 'vue'
 import { Modal, Form, InputNumber, Input, Select } from 'ant-design-vue'
-import { useAsync } from '@/hooks'
+import { ModuleItem } from '@/api/system/access/AccessModel'
 import { postAdminAccess, getAdminAccessModule, patchAdminAccess } from '@/api/system/access'
 const prefix = import.meta.env.BASE_URL
+
+interface IState {
+  visible: boolean
+  confirmLoading: boolean
+  moduleList: ModuleItem[]
+}
 
 export default defineComponent({
   name: 'AddModal',
@@ -107,7 +113,7 @@ export default defineComponent({
   setup(props) {
     const formRef = ref<any>(null)
 
-    const state = reactive({
+    const state: IState = reactive({
       visible: true,
       confirmLoading: false,
       moduleList: []
@@ -175,12 +181,12 @@ export default defineComponent({
         .then(async () => {
           const id = props.fields.id
           const params = toRaw(modelRef)
-          id && delete params.type
+          id && Reflect.deleteProperty(params, 'type')
           await (id ? patchAdminAccess(id, params) : postAdminAccess(params)).finally(
             () => (state.confirmLoading = false)
           )
           state.visible = false
-          props.callback && props.callback()
+          props?.callback?.()
         })
         .catch((err) => {
           console.log('error', err)

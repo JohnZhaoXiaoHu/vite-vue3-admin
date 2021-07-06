@@ -13,7 +13,7 @@
           <template #tab>
             <a-dropdown :trigger="['contextmenu']">
               <div style="display: inline-block">
-                {{ pageItem.meta.title }}
+                {{ pageItem.meta?.title }}
               </div>
               <template #overlay>
                 <a-menu style="user-select: none">
@@ -98,11 +98,11 @@
 
 <script lang="ts">
 import { defineComponent, reactive, computed, toRefs, unref, provide, watch } from 'vue'
-import { RouteRecord, useRoute, useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import components from '@/layout/tabs/components'
 import { storage } from '@/utils/Storage'
 import { TABS_ROUTES } from '@/store/mutation-types'
-import store, { useStore } from '@/store'
+import { useStore } from '@/store'
 import { RouteItem } from '@/store/modules/tabs-view/state'
 
 import { message } from 'ant-design-vue'
@@ -310,9 +310,9 @@ export default defineComponent({
   }
 
   .tabs-view-content {
-    padding: 20px 14px 0;
-    /*height: calc(100vh - #{$header-height});*/
+    /* height: calc(100vh - #{$header-height}); */
     height: calc(100vh - 110px);
+    padding: 20px 14px 0;
     overflow: auto;
   }
 }

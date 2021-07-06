@@ -18,7 +18,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, ref, toRefs } from 'vue'
+import { defineComponent, ref } from 'vue'
 import { Alert, Card } from 'ant-design-vue'
 import { AButton } from '@/components/button'
 import { SchemaForm } from '@/components/JSON-schema-form'
@@ -31,10 +31,10 @@ export default defineComponent({
   name: 'RuleForm',
   components: { [Alert.name]: Alert, [Card.name]: Card, AButton, SchemaForm },
   setup() {
-    const dynamicForm = ref()
+    const dynamicForm = ref<InstanceType<typeof SchemaForm>>()
 
     // 点击提交
-    const confirm = () => dynamicForm.value.validate()
+    const confirm = () => dynamicForm.value?.validate()
 
     return {
       dynamicForm,

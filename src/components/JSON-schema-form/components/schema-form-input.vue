@@ -15,7 +15,6 @@ export default defineComponent({
   components: {
     [Input.name]: Input
   },
-  emits: ['update:value'],
   props: {
     formItem: {
       // 表单项
@@ -24,6 +23,7 @@ export default defineComponent({
     },
     value: undefined as any // 表单项值
   },
+  emits: ['update:value'],
   setup(props, { attrs, emit }) {
     const modelValue = computed({
       get: () => props.value,

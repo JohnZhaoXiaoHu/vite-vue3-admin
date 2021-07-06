@@ -66,11 +66,8 @@ export default defineComponent({
 <style lang="scss" scoped>
 .layout {
   display: flex;
-  overflow: hidden;
   height: 100vh;
-
-  .layout-sider {
-  }
+  overflow: hidden;
 
   .ant-layout {
     overflow: hidden;

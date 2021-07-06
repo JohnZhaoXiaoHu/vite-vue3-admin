@@ -19,11 +19,11 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .page-container {
+  display: flex;
   width: 100vw;
   height: 100vh;
-  display: flex;
+  background-color: white;
   justify-content: center;
   align-items: center;
-  background-color: white;
 }
 </style>

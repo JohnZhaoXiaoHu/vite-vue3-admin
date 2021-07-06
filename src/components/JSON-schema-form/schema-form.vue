@@ -9,7 +9,9 @@
           :help="formItem.help"
           :extra="formItem.extra"
           :label="formItem.label"
+          :name="formItem.field"
           v-bind="{ ...formItem.props, ...validateInfos[formItem.field] }"
+          :type="undefined"
         >
           <component
             :is="getComponent(formItem.type)"
@@ -45,9 +47,10 @@ import {
   PropType
 } from 'vue'
 import { Form, Spin } from 'ant-design-vue'
-import { useForm } from '@ant-design-vue/use'
 import { isString, isFunction, isAsyncFunction } from '@/utils/is'
 import components from './components'
+
+const useForm = Form.useForm
 
 export default defineComponent({
   name: 'DynamicForm',
@@ -69,9 +72,9 @@ export default defineComponent({
       default: () => ({})
     }
   },
-  setup(props, ctx) {
+  setup(props) {
     // a-form
-    const schemaFormRef = ref<any>(null)
+    const schemaFormRef = ref<InstanceType<typeof Form>>()
     // 表单实例
     const formInstance = getCurrentInstance()
 
@@ -102,7 +105,7 @@ export default defineComponent({
     // 异步设置默认数据
     props.formSchema.formItem.forEach(async (item: FormItem) => {
       // 是否需要loading
-      if (item?.hasOwnProperty('loading')) {
+      if (Object.prototype.hasOwnProperty.call(item, 'loading')) {
         item.loading = true
       }
       // 异步选项

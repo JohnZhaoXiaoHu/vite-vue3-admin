@@ -25,12 +25,13 @@
       </a-button>
     </template>
     <template #moduleName="{ record }">
-      <span :ref="(el) => (itemRefs[record.id] = el)">
+      <span :ref="(el) => el && (itemRefs[record.id] = el)">
         {{ record.moduleName || record.actionName }}
       </span>
     </template>
   </dynamic-table>
 </template>
+
 <script lang="ts">
 import { defineComponent, reactive, toRefs, createVNode, computed, ref } from 'vue'
 import { Modal } from 'ant-design-vue'
@@ -48,10 +49,10 @@ export default defineComponent({
     DynamicTable
   },
   setup() {
-    const tableRef = ref<any>(null)
+    const tableRef = ref<InstanceType<typeof DynamicTable>>()
+    const itemRefs = ref({})
 
     const state = reactive({
-      itemRefs: {},
       expandedRowKeys: [] as string[],
       tableLoading: false,
       rowSelection: {
@@ -70,7 +71,7 @@ export default defineComponent({
         content: '您确定要删除所有选中吗？',
         onOk: async () => {
           await delAdminAccess(state.rowSelection.selectedRowKeys.toString())
-          await tableRef.value.refreshTableData()
+          await tableRef.value?.refreshTableData()
           state.rowSelection.selectedRowKeys = []
         }
       })
@@ -79,7 +80,7 @@ export default defineComponent({
     const addItem = () => {
       useCreateModal(AddModal, {
         callback: () => {
-          tableRef.value.refreshTableData()
+          tableRef.value?.refreshTableData()
         }
       })
     }
@@ -89,7 +90,7 @@ export default defineComponent({
 
     // 点击展开图标
     const expand = async (expanded, record) => {
-      const expandItemEl = state.itemRefs[record.id]
+      const expandItemEl = itemRefs.value[record.id]
       // 点击展开图标loading
       const result = await useExpandLoading({
         expanded,
@@ -106,10 +107,11 @@ export default defineComponent({
     return {
       ...toRefs(state),
       columns,
+      itemRefs,
       tableRef,
+      isDisabled,
       expand,
       getAdminAccess,
-      isDisabled,
       addItem,
       deleteItems
     }

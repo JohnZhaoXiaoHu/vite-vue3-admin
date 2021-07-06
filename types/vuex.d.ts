@@ -12,3 +12,5 @@ declare module '@vue/runtime-core' {
     $store: Store<State>
   }
 }
+
+export {}

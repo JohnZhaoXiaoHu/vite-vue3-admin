@@ -61,7 +61,6 @@ export default defineComponent({
     OneToOneOutlined,
     [Spin.name]: Spin
   },
-  emits: ['update:visible'],
   props: {
     visible: {
       type: Boolean as PropType<boolean>,
@@ -76,9 +75,10 @@ export default defineComponent({
       default: ''
     }
   },
+  emits: ['update:visible'],
   setup(props, { emit }) {
     // 图片蒙层
-    const imgScaleMask = ref<any>(null)
+    const imgScaleMask = ref<HTMLDivElement>()
 
     let timer
 
@@ -129,8 +129,8 @@ export default defineComponent({
         state.imgStyle.maxHeight = 'none!important'
       }
       clearTimeout(timer)
-      timer = setTimeout(() => imgScaleMask.value.classList.remove('active'), 1400)
-      imgScaleMask.value.classList.add('active')
+      timer = setTimeout(() => imgScaleMask.value?.classList.remove('active'), 1400)
+      imgScaleMask.value?.classList.add('active')
       state.contentStyle = {}
     }
     // 恢复原来的比例
@@ -181,20 +181,20 @@ export default defineComponent({
 .preview-modal {
   position: fixed;
   top: 0;
-  left: 0;
-  bottom: 0;
   right: 0;
-  background-color: rgba(0, 0, 0, 0.4);
+  bottom: 0;
+  left: 0;
   z-index: 1000;
   display: flex;
+  background-color: rgba(0, 0, 0, 0.4);
+  user-select: none;
   align-items: center;
   justify-content: center;
-  user-select: none;
 
   .close-icon {
     position: absolute;
-    right: 10px;
     top: 10px;
+    right: 10px;
     z-index: 2000;
     font-size: 32px;
     color: white;
@@ -215,21 +215,18 @@ export default defineComponent({
     outline: none;
   }
 
-  video {
-  }
-
   .img-scale-mask {
-    opacity: 0;
     position: absolute;
-    left: 50%;
     top: 50%;
+    left: 50%;
+    padding: 8px 22px;
+    color: white;
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.6);
+    border-radius: 12px;
+    opacity: 0;
     transform: translate(-50%, -50%);
     transition: opacity 0.08s;
-    color: white;
-    padding: 8px 22px;
-    text-align: center;
-    border-radius: 12px;
-    background-color: rgba(0, 0, 0, 0.6);
     user-select: none;
 
     &.active {
@@ -237,24 +234,25 @@ export default defineComponent({
     }
   }
 }
+
 .toolbar {
   position: absolute;
   bottom: 10%;
   left: 50%;
-  transform: translateX(-50%);
+  display: flex;
+  padding: 4px 30px;
   font-size: 26px;
   background-color: white;
-  padding: 4px 30px;
-  border-radius: 30px;
-  display: flex;
-  align-items: center;
   background-color: rgba(109, 109, 109, 0.6);
+  border-radius: 30px;
+  transform: translateX(-50%);
   box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.08);
+  align-items: center;
 
   > .anticon {
     padding: 3px 8px;
-    cursor: pointer;
     color: white;
+    cursor: pointer;
 
     &:hover {
       transform: scale(1.06);

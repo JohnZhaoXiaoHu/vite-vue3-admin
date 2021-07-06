@@ -22,6 +22,7 @@ module.exports = {
     'plugin:prettier/recommended'
   ],
   rules: {
+    'no-unused-vars': 'off',
     'vue/no-unused-components': 'off',
     'vue/no-unused-vars': 'off',
     'vue/no-v-for-template-key-on-child': 'off',
@@ -37,6 +38,7 @@ module.exports = {
 
     'space-before-function-paren': 'off',
 
+    '@typescript-eslint/no-unused-vars': 'off',
     '@typescript-eslint/camelcase': 'off',
     '@typescript-eslint/ban-ts-ignore': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',
