@@ -52,7 +52,7 @@ export default defineComponent({
       message.success(h('span', '啥子'), 2)
     }
 
-    const asiderWidth = computed(() => (collapsed.value ? '80px' : '256px'))
+    const asiderWidth = computed(() => (collapsed.value ? '80px' : '208px'))
 
     return {
       collapsed,
