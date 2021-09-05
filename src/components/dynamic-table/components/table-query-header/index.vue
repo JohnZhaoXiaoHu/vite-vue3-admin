@@ -124,11 +124,11 @@ export default defineComponent({
   white-space: nowrap;
 }
 
-::v-deep .ant-row {
+:deep .ant-row {
   width: 100%;
 }
 
-::v-deep .ant-form-item {
+:deep .ant-form-item {
   margin-right: 0;
 }
 

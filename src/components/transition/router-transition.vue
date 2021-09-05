@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <SuspenseWithError>
     <router-view v-slot="{ Component, route }">
       <transition name="zoom-fade" mode="out-in" appear>
         <keep-alive :include="keepAliveComponents">
@@ -7,15 +7,17 @@
         </keep-alive>
       </transition>
     </router-view>
-  </div>
+  </SuspenseWithError>
 </template>
 
 <script lang="ts">
 import { defineComponent, computed } from 'vue'
 import { useStore } from '@/store'
+import SuspenseWithError from '@/components/SuspenseWithError.vue'
 
 export default defineComponent({
   name: 'RouterTransition',
+  components: { SuspenseWithError },
   props: {
     notNeedKey: {
       type: Boolean,

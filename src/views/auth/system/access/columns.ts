@@ -1,5 +1,5 @@
 import { useCreateModal } from '@/hooks'
-import AddModal from './add-modal.vue'
+import operateModal from './operate-modal.vue'
 import { delAdminAccess } from '@/api/system/access'
 import { formatDate } from '@/utils/common'
 import { message } from 'ant-design-vue'
@@ -89,7 +89,7 @@ export const columns: TableColumn[] = [
           type: 'warning' // 按钮类型
         },
         func: ({ record }, callback) =>
-          useCreateModal(AddModal, {
+          useCreateModal(operateModal, {
             // 点击删除的回调
             fields: record,
             callback

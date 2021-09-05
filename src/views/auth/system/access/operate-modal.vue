@@ -1,6 +1,7 @@
 <template>
   <a-modal
     v-model:visible="visible"
+    :width="600"
     :title="Number.isInteger(fields.id) ? '编辑资源' : '新增资源'"
     :confirm-loading="confirmLoading"
     :afterClose="remove"
@@ -53,6 +54,18 @@
       >
         <a-input v-model:value="modelRef.actionName" placeholder="请输入菜单名称" />
       </a-form-item>
+      <a-form-item
+        v-if="modelRef.type == 2"
+        label="文件路径"
+        :rules="rules.viewPath"
+        name="viewPath"
+      >
+        <a-select v-model:value="modelRef.viewPath" placeholder="请选择页面对应的文件路径">
+          <template v-for="(comp, path) in constantRouterComponents" :key="path">
+            <a-select-option :value="path"> {{ path }} </a-select-option>
+          </template>
+        </a-select>
+      </a-form-item>
       <a-form-item label="路径" :rules="rules.url" name="url">
         <a-input v-model:value="modelRef.url" placeholder="请输入路径" />
       </a-form-item>
@@ -74,8 +87,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, toRefs, onMounted, toRaw, ref } from 'vue'
+import { defineComponent, reactive, toRefs, onMounted, ref } from 'vue'
 import { Modal, Form, InputNumber, Input, Select } from 'ant-design-vue'
+import { constantRouterComponents } from '@/router/modules'
 import { ModuleItem } from '@/api/system/access/AccessModel'
 import { postAdminAccess, getAdminAccessModule, patchAdminAccess } from '@/api/system/access'
 const prefix = import.meta.env.BASE_URL
@@ -87,7 +101,7 @@ interface IState {
 }
 
 export default defineComponent({
-  name: 'AddModal',
+  name: 'OperateModal',
   components: {
     [Modal.name]: Modal,
     [Form.name]: Form,
@@ -122,6 +136,7 @@ export default defineComponent({
       moduleName: '',
       moduleId: undefined,
       actionName: '',
+      viewPath: '',
       type: undefined as undefined | number,
       url: '',
       icon: '',
@@ -154,6 +169,12 @@ export default defineComponent({
           message: '请输入菜单名称'
         }
       ],
+      viewPath: [
+        {
+          required: true,
+          message: '请输入页面对应的文件路径'
+        }
+      ],
       type: [
         {
           required: true,
@@ -173,25 +194,23 @@ export default defineComponent({
       state.moduleList = await getAdminAccessModule()
     })
 
-    const handleOk = (e) => {
+    const handleOk = async (e) => {
       e.preventDefault()
       state.confirmLoading = true
-      formRef.value
-        .validate()
-        .then(async () => {
-          const id = props.fields.id
-          const params = toRaw(modelRef)
-          id && Reflect.deleteProperty(params, 'type')
-          await (id ? patchAdminAccess(id, params) : postAdminAccess(params)).finally(
-            () => (state.confirmLoading = false)
-          )
-          state.visible = false
-          props?.callback?.()
-        })
-        .catch((err) => {
-          console.log('error', err)
-          state.confirmLoading = false
-        })
+      try {
+        await formRef.value.validate()
+        const id = props.fields.id
+        const params = { ...modelRef }
+        id && Reflect.deleteProperty(params, 'type')
+        await (id ? patchAdminAccess(id, params) : postAdminAccess(params)).finally(
+          () => (state.confirmLoading = false)
+        )
+        state.visible = false
+        props?.callback?.()
+      } catch (error) {
+        console.log('error', error)
+        state.confirmLoading = false
+      }
     }
 
     return {
@@ -199,9 +218,10 @@ export default defineComponent({
       formRef,
       rules,
       prefix,
-      labelCol: { span: 6 },
-      wrapperCol: { span: 18 },
+      labelCol: { span: 4 },
+      wrapperCol: { span: 20 },
       modelRef,
+      constantRouterComponents,
       handleOk
     }
   }

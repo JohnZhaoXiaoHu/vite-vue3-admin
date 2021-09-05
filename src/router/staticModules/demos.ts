@@ -22,7 +22,10 @@ const routes: Array<RouteRecordRaw> = [
           icon: 'icon-zhuomian',
           keepAlive: true
         },
-        component: () => import('@/views/shared/demos/custom-modal.vue')
+        component: () =>
+          import(
+            /* webpackChunkName: "demos-custom-a-custom-modal" */ '@/views/shared/demos/custom-modal.vue'
+          )
       },
       {
         path: 'button',
@@ -32,7 +35,8 @@ const routes: Array<RouteRecordRaw> = [
           icon: 'icon-zhuomian',
           keepAlive: true
         },
-        component: () => import('@/views/shared/demos/button.vue')
+        component: () =>
+          import(/* webpackChunkName: "demos-button" */ '@/views/shared/demos/button.vue')
       },
       {
         path: 'form',
@@ -42,7 +46,21 @@ const routes: Array<RouteRecordRaw> = [
           icon: 'icon-zhuomian',
           keepAlive: true
         },
-        component: () => import('@/views/shared/demos/form/rule-form.vue')
+        component: () =>
+          import(/* webpackChunkName: "demos-button" */ '@/views/shared/demos/form/rule-form.vue')
+      },
+      {
+        path: 'summary-table',
+        name: `${routeName}-summary-table`,
+        meta: {
+          title: '合计表格',
+          icon: 'icon-zhuomian',
+          keepAlive: true
+        },
+        component: () =>
+          import(
+            /* webpackChunkName: "summary-table" */ '@/views/shared/demos/tables/summary-table/index.vue'
+          )
       },
       {
         path: 'icons',
@@ -52,7 +70,8 @@ const routes: Array<RouteRecordRaw> = [
           icon: 'icon-zhuomian',
           keepAlive: true
         },
-        component: () => import('@/views/shared/demos/icons/Iconfont.vue')
+        component: () =>
+          import(/* webpackChunkName: "demos-button" */ '@/views/shared/demos/icons/Iconfont.vue')
       }
     ]
   }

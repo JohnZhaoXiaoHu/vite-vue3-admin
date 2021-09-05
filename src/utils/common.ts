@@ -1,5 +1,4 @@
 import dayjs from 'dayjs'
-import RequireContext = __WebpackModuleApi.RequireContext
 
 /**
  * @description 处理首字母大写 abc => Abc
@@ -7,20 +6,6 @@ import RequireContext = __WebpackModuleApi.RequireContext
  */
 export const changeStr = (str: string) => {
   return str.charAt(0).toUpperCase() + str.slice(1)
-}
-
-/**
- * @description 批量导入文件
- * @param {Object} context 上下文对象
- * @param {RegExp} reg 匹配规则
- * @returns {Object} 对象
- */
-export const importAllModule = (context: RequireContext, reg = /\.vue$/) => {
-  return context.keys().reduce((compObj: any, fileName) => {
-    const compName = changeStr(fileName.replace(/^\.\//, '').replace(/\.\w+$/, ''))
-    compObj[compName] = context(fileName).default || context(fileName)
-    return compObj
-  }, {})
 }
 
 /**
@@ -95,7 +80,8 @@ export const toJSON = (obj) => {
 /***
  * @description 是否是生产环境
  */
-export const isDev = import.meta.env.DEV
+export const IS_PROD = ['production', 'prod'].includes(process.env.NODE_ENV!)
+export const IS_DEV = ['development'].includes(process.env.NODE_ENV!)
 
 /***
  * @description 格式化日期
@@ -132,3 +118,15 @@ const encryption = (plaintext: string) =>
  */
 const decryption = (ciphertext: string) =>
   isBase64(ciphertext) ? window.decodeURIComponent(window.atob(ciphertext)) : ciphertext
+
+/**
+ * / _ - 转换成驼峰并将view替换成空字符串
+ * @param {*} name name
+ */
+export const toHump = (name) => {
+  return name
+    .replace(/[\-\/\_](\w)/g, (all, letter) => {
+      return letter.toUpperCase()
+    })
+    .replace('views', '')
+}

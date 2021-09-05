@@ -38,7 +38,7 @@ import { Modal } from 'ant-design-vue'
 import { QuestionCircleOutlined } from '@ant-design/icons-vue'
 import { DynamicTable } from '@/components/dynamic-table'
 import { delAdminAccess, getAdminAccess } from '@/api/system/access'
-import AddModal from './add-modal.vue'
+import OperateModal from './operate-modal.vue'
 import { columns } from './columns'
 import { useExpandLoading } from '@/components/dynamic-table/hooks'
 import { useCreateModal } from '@/hooks'
@@ -53,8 +53,6 @@ export default defineComponent({
     const itemRefs = ref({})
 
     const state = reactive({
-      expandedRowKeys: [] as string[],
-      tableLoading: false,
       rowSelection: {
         onChange: (selectedRowKeys, selectedRows) => {
           state.rowSelection.selectedRowKeys = selectedRowKeys
@@ -78,7 +76,7 @@ export default defineComponent({
     }
     // 添加资源
     const addItem = () => {
-      useCreateModal(AddModal, {
+      useCreateModal(OperateModal, {
         callback: () => {
           tableRef.value?.refreshTableData()
         }

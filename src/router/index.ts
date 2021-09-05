@@ -3,9 +3,9 @@ import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router'
 import { createRouterGuards } from './router-guards'
 import 'nprogress/css/nprogress.css' // 进度条样式
 
-import shared from './modules/shared'
-import { errorRoutes, notFound } from './modules/error'
-import common from '@/router/common'
+import shared from './staticModules/shared'
+import { errorRoutes } from './staticModules/error'
+import common from '@/router/staticModules'
 import { App } from 'vue'
 
 export const routes: Array<RouteRecordRaw> = [
@@ -24,6 +24,7 @@ export const routes: Array<RouteRecordRaw> = [
 ]
 
 const router = createRouter({
+  // process.env.BASE_URL
   history: createWebHashHistory(''),
   routes
 })

@@ -21,7 +21,10 @@ const routes: Array<RouteRecordRaw> = [
           title: '首页',
           icon: 'icon-shouye'
         },
-        component: () => import('@/views/shared/dashboard/welcome/index.vue')
+        component: () =>
+          import(
+            /* webpackChunkName: "dashboard-welcome" */ '@/views/shared/dashboard/welcome/index.vue'
+          )
       }
     ]
   }

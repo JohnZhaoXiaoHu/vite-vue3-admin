@@ -19,10 +19,12 @@
         </template>
       </template>
     </a-sub-menu>
-    <a-menu-item v-else :key="menuInfo.name">
-      <icon-font :type="menuInfo.meta.icon" />
-      <span>{{ menuInfo.meta.title }}</span>
-    </a-menu-item>
+    <template v-else>
+      <a-menu-item :key="menuInfo.name">
+        <icon-font :type="menuInfo.meta.icon" />
+        <span>{{ menuInfo.meta.title }}</span>
+      </a-menu-item>
+    </template>
   </template>
 </template>
 

@@ -1,21 +1,21 @@
 import { adminMenus } from '@/api/system/menu'
-import { constantRouterComponents } from './constantRouterComponents'
-import router from '@/router/index'
-import { routes } from '@/router/index'
-import { notFound } from '@/router/modules/error'
-import { Empty } from 'ant-design-vue'
-import common from '@/router/common'
+import { constantRouterComponents } from './modules'
+import router, { routes } from '@/router/'
+import { notFound } from '@/router/staticModules/error'
+import common from '@/router/staticModules/'
 import { RouteRecordRaw } from 'vue-router'
+import { toHump } from '@/utils/common'
+import { RouterTransition } from '@/components/transition'
 
 /**
  * 异步生成菜单树， 方案二
  * @param dataList
  */
-const list2tree = (items, parentId = -1, arr = [], pathPrefix = '') => {
+const list2tree = (items, parentId = -1, pathPrefix = '') => {
   return items
     .filter((item) => item.parentId == parentId)
     .map((item: any) => {
-      const { icon, id, name, parentId, sort, keepAlive, meta, url } = item
+      const { icon, viewPath, name, parentId, keepAlive, meta, url } = item
       let path = ''
       if (/http(s)?:/.test(url)) {
         path = url
@@ -27,13 +27,15 @@ const list2tree = (items, parentId = -1, arr = [], pathPrefix = '') => {
 
       // 路由对应的组件
       const component =
-        constantRouterComponents[path] || Empty || (() => import('@/views/shared/error/404.vue'))
+        parentId === -1
+          ? RouterTransition
+          : constantRouterComponents[viewPath] || (() => import('@/views/shared/error/404.vue'))
 
       return {
         path: path,
         // 路由名称，建议唯一
-        name: path || '',
-        children: list2tree(items, item.id, [], path),
+        name: viewPath ? toHump(viewPath) : path,
+        children: list2tree(items, item.id, path),
         // 该路由对应页面的 组件 (动态加载)
         component: component,
         props: true,
@@ -72,7 +74,6 @@ export const generatorDynamicRouter = (): Promise<RouteRecordRaw[]> => {
   return new Promise((resolve, reject) => {
     adminMenus()
       .then((result) => {
-        console.log('result', result)
         const menuNav: any = []
         const childrenNav = []
         //      后端数据, 根级树数组,  根级 PID

@@ -10,53 +10,54 @@ export const useDragCol = (columnsProp) => {
   const setEventNull = () =>
     (headerCell.onmouseup = headerCell.onmousedown = headerCell.onmousemove = null)
 
-  columnsProp.forEach(
-    (item) =>
-      (item.customHeaderCell = (columns) => ({
-        onmouseenter: () => {
-          headerCell = columns.title[0].el.closest('th')
-          table ??= headerCell.closest('.ant-table-wrapper')
-          tableX ??= table.clientWidth
-          // console.log(headerCell, 'columns')
-          headerCell.onmousemove = function (event) {
-            if (event.offsetX > this.offsetWidth - 10) {
-              this.style.cursor = 'col-resize'
-            } else {
-              this.style.cursor = 'default'
-            }
-            if (self == undefined) {
-              self = this
-            }
-            if (self.mouseDown != null && self.mouseDown == true) {
-              self.style.cursor = 'default'
-              if (self.oldWidth + (event.x - self.oldX) > 0) {
-                self.width = self.oldWidth + (event.x - self.oldX)
-              }
-              self.style.width = self.width
-              table.style.width = tableX + (event.x - self.oldX) + 'px'
-              self.style.cursor = 'col-resize'
-            }
+  columnsProp.forEach((item) => {
+    const customHeaderCell = item?.customHeaderCell?.(columnsProp) ?? {}
+    item.customHeaderCell = (columns) => ({
+      ...customHeaderCell,
+      onmouseenter: () => {
+        headerCell = columns.title[0].el.closest('th')
+        table ??= headerCell.closest('.ant-table-wrapper')
+        tableX ??= table.clientWidth
+        // console.log(headerCell, 'columns')
+        headerCell.onmousemove = function (event) {
+          if (event.offsetX > this.offsetWidth - 10) {
+            this.style.cursor = 'col-resize'
+          } else {
+            this.style.cursor = 'default'
           }
-          headerCell.onmousedown = function (event) {
+          if (self == undefined) {
             self = this
-            if (event.offsetX > self.offsetWidth - 10) {
-              self.mouseDown = true
-              self.oldX = event.x
-              self.oldWidth = self.offsetWidth
-            }
           }
-          headerCell.onmouseup = setEventNull
-          table.onmouseup = function () {
-            setEventNull()
-            if (self == undefined) {
-              self = this
-            }
-            self.mouseDown = false
+          if (self.mouseDown != null && self.mouseDown == true) {
             self.style.cursor = 'default'
-            tableX = table.clientWidth
+            if (self.oldWidth + (event.x - self.oldX) > 0) {
+              self.width = self.oldWidth + (event.x - self.oldX)
+            }
+            self.style.width = self.width
+            table.style.width = tableX + (event.x - self.oldX) + 'px'
+            self.style.cursor = 'col-resize'
           }
-        },
-        onmouseup: () => setEventNull
-      }))
-  )
+        }
+        headerCell.onmousedown = function (event) {
+          self = this
+          if (event.offsetX > self.offsetWidth - 10) {
+            self.mouseDown = true
+            self.oldX = event.x
+            self.oldWidth = self.offsetWidth
+          }
+        }
+        headerCell.onmouseup = setEventNull
+        table.onmouseup = function () {
+          setEventNull()
+          if (self == undefined) {
+            self = this
+          }
+          self.mouseDown = false
+          self.style.cursor = 'default'
+          tableX = table.clientWidth
+        }
+      },
+      onmouseup: () => setEventNull
+    })
+  })
 }

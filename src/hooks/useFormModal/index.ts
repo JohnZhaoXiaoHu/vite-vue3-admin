@@ -1,6 +1,7 @@
 // create-api.ts
 import { createVNode, render, VNode } from 'vue'
 import FormModal from './form-modal.vue'
+import app from '@/main'
 
 interface ModalInstance {
   remove(): void
@@ -31,6 +32,8 @@ export const useFormModal = (options: Options): VNode<ModalInstance> => {
     container.remove()
   }
   formModal = createVNode(FormModal, { ...options, remove })
+  // 使当前模态框继承App实例上下文
+  formModal.appContext = app._instance?.appContext
   render(formModal, container)
   return formModal
 }

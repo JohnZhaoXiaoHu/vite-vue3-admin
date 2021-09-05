@@ -1,4 +1,3 @@
-import { RouteRecordRaw } from 'vue-router'
 import { RouterTransition } from '@/components/transition'
 
 const routeName = 'error'
@@ -7,10 +6,10 @@ export const notFound = {
   path: '/:pathMatch(.*)*',
   name: 'NotFound',
   redirect: '/error/404',
-  component: () => import('@/views/shared/error/404.vue')
+  component: () => import(/* webpackChunkName: "404" */ '@/views/shared/error/404.vue')
 }
 
-export const errorRoutes: RouteRecordRaw = {
+export const errorRoutes = {
   path: '/error',
   name: routeName,
   redirect: '/error/404',
@@ -28,7 +27,9 @@ export const errorRoutes: RouteRecordRaw = {
         title: '404',
         icon: 'UserOutlined'
       },
-      component: () => import('@/views/shared/error/404.vue')
+      component: () => import(/* webpackChunkName: "404" */ '@/views/shared/error/404.vue')
     }
   ]
 }
+
+export default [notFound, errorRoutes]

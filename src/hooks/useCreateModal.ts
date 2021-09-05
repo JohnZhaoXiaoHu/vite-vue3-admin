@@ -1,5 +1,6 @@
 // create-api.ts
 import { App, createVNode, render, mergeProps, Component, ComponentOptions } from 'vue'
+import app from '@/main'
 
 interface ModalInstance {
   remove(): void
@@ -13,25 +14,23 @@ interface Options {
   [key: string]: any
 }
 
-export const useCreateModal = (
-  component: Component,
-  options?: Options,
-  app?: App
-): ModalInstance => {
-  let _instance: any = null
+export const useCreateModal = (component: Component, options?: Options): ModalInstance => {
+  let _instance
   // if (!_instance) {
   // const container = document.createDocumentFragment()
   const container = document.createElement('div')
   // 移除组件
   const remove = () => {
-    render(null, container)
     _instance = null
+    render(null, container)
     container.remove()
   }
   // 点击body移除组件
   // document.body.addEventListener('click', remove)
   // 直接根据组件生成 VNode
   _instance = createVNode(component)
+  // 使当前模态框继承App实例上下文
+  _instance.appContext = app._instance?.appContext
   // Vue3 的 props 是扁平化的，事件直接 onMethods 即可；和 React props 类似，合并属性更轻松
   _instance.props = mergeProps(_instance.props, {
     remove,
