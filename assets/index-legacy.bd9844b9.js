@@ -1,0 +1,1 @@
+System.register(["./vendor-legacy.e71c8e14.js"],(function(e){"use strict";var r,t,n,u,s,a;return{setters:[function(e){r=e.d,t=e.$,n=e._,u=e.bi,s=e.G,a=e.N}],execute:function(){e("default",r({name:"Redirect",setup(e){const r=t(),c=n();return u((()=>{const{params:e,query:t}=r,{path:n}=e;c.replace({path:"/"+(Array.isArray(n)?n.join("/"):n),query:t})})),()=>s(a,null,null)}}))}}}));
