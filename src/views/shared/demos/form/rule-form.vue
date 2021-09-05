@@ -33,7 +33,9 @@ export default defineComponent({
     const dynamicForm = ref<InstanceType<typeof SchemaForm>>()
 
     // 点击提交
-    const confirm = () => dynamicForm.value?.validate().then(() => message.success('验证通过！'))
+    const confirm = () => {
+      dynamicForm.value?.validate().then(() => message.success('验证通过！'))
+    }
 
     return {
       dynamicForm,

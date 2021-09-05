@@ -7,7 +7,7 @@
       <slot name="default"></slot>
     </template>
     <template #fallback>
-      <slot name="fallback"></slot>
+      <slot name="fallback"> </slot>
     </template>
   </Suspense>
 </template>
@@ -20,6 +20,7 @@ export default defineComponent({
     const error = ref<any>(null)
     onErrorCaptured((e) => {
       error.value = '(⊙o⊙)…出了点问题。'
+      console.error('onErrorCaptured', e)
       return true
     })
     return { error }
