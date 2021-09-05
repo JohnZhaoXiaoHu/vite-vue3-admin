@@ -55,12 +55,20 @@
         <a-input v-model:value="modelRef.actionName" placeholder="请输入菜单名称" />
       </a-form-item>
       <a-form-item
-        v-if="modelRef.type == 2"
         label="文件路径"
-        :rules="rules.viewPath"
         name="viewPath"
+        :rules="[
+          {
+            required: modelRef.type == 2,
+            message: '请输入页面对应的文件路径'
+          }
+        ]"
       >
-        <a-select v-model:value="modelRef.viewPath" placeholder="请选择页面对应的文件路径">
+        <a-select
+          v-model:value="modelRef.viewPath"
+          :allowClear="modelRef.type == 1"
+          placeholder="请选择页面对应的文件路径"
+        >
           <template v-for="(comp, path) in constantRouterComponents" :key="path">
             <a-select-option :value="path"> {{ path }} </a-select-option>
           </template>
@@ -169,12 +177,6 @@ export default defineComponent({
           message: '请输入菜单名称'
         }
       ],
-      viewPath: [
-        {
-          required: true,
-          message: '请输入页面对应的文件路径'
-        }
-      ],
       type: [
         {
           required: true,
@@ -201,6 +203,7 @@ export default defineComponent({
         await formRef.value.validate()
         const id = props.fields.id
         const params = { ...modelRef }
+        params.viewPath ??= ''
         id && Reflect.deleteProperty(params, 'type')
         await (id ? patchAdminAccess(id, params) : postAdminAccess(params)).finally(
           () => (state.confirmLoading = false)

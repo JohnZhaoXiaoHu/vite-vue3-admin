@@ -1,5 +1,5 @@
 // create-api.ts
-import { createVNode, render, VNode } from 'vue'
+import { App, createVNode, render, VNode } from 'vue'
 import FormModal from './form-modal.vue'
 
 interface ModalInstance {
@@ -14,6 +14,8 @@ interface Options {
   hiddenFields?: string[] // 需要隐藏的表单项
   [key: string]: any
 }
+
+let _app
 
 /**
  * 创建表单模态框
@@ -32,7 +34,13 @@ export const useFormModal = (options: Options): VNode<ModalInstance> => {
   }
   formModal = createVNode(FormModal, { ...options, remove })
   // 使当前模态框继承App实例上下文
-  // formModal.appContext = app._instance?.appContext
+  _app && (formModal.appContext = _app._instance?.appContext)
   render(formModal, container)
   return formModal
 }
+
+// 暴露一个插件 API
+const install = (app: App) => {
+  _app = app
+}
+export default install
